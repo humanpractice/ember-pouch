@@ -40,6 +40,14 @@ define("ember-pouch/pouchdb-adapter",
 
             var store = this.container.lookup('store:main');
 
+            try {
+              store.modelFor(obj.type);
+            } catch (e) {
+              // The record refers to a model which this version of the application
+              // does not have.
+              return;
+            }
+
             var recordInStore = store.getById(obj.type, obj.id);
             if (!recordInStore) {
               // The record hasn't been loaded into the store; no need to reload its data.
